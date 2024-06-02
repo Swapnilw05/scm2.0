@@ -1,12 +1,22 @@
 package com.scm.controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import com.scm.entities.User;
+import com.scm.forms.UserForm;
+import com.scm.repositories.UserService;
 
 @Controller
 public class PageController {
+
+    @Autowired
+    private UserService userService;
 
     @RequestMapping("/home")
     public String home(Model model){
@@ -41,7 +51,47 @@ public class PageController {
      }
 
      @GetMapping("/register")
-     public String register(){
-        return new String("register");
+     public String register(Model model){
+        UserForm userForm = new UserForm();
+        model.addAttribute("userForm", userForm);
+        return "register";
      }
+
+    //  processing register
+
+    @RequestMapping(value = "/do-register", method = RequestMethod.POST)
+    public String processRegister(@ModelAttribute UserForm userForm){
+        System.out.println("processing registration");
+
+        // fetch from data
+        // UserForm
+
+        System.out.println(userForm);
+
+        // validate form data
+        //  TODO: validate userForm
+        
+        // save to database
+
+        //UserForm --> user
+        User user = User.builder()
+        .name(userForm.getName())
+        .email(userForm.getEmail())
+        .password(userForm.getPassword())
+        .about(userForm.getAbout())
+        .phoneNumber(userForm.getPhoneNumber())
+        .profilePic("https://t3.ftcdn.net/jpg/06/33/54/78/360_F_633547842_AugYzexTpMJ9z1YcpTKUBoqBF0CUCk10.jpg")
+        .build();
+
+        User savedUser = userService.saveUser(user);
+
+        System.out.println("user saved");
+
+        // userservice  =new UserService();
+
+        //message = "registration successful
+        //redirect to login page
+
+        return "redirect:/register";
+    }
 }
