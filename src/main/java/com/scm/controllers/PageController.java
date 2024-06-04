@@ -13,7 +13,7 @@ import com.scm.entities.User;
 import com.scm.forms.UserForm;
 import com.scm.helper.Message;
 import com.scm.helper.MessageType;
-import com.scm.repositories.UserService;
+import com.scm.service.UserService;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -23,6 +23,11 @@ public class PageController {
 
     @Autowired
     private UserService userService;
+
+    @GetMapping("/")
+    public String index(){
+        return "redirect:/home";
+    }
 
     @RequestMapping("/home")
     public String home(Model model){
