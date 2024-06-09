@@ -56,11 +56,13 @@ public class PageController {
         return new String("contact");
      }
 
+    // this is login page
      @GetMapping("/login")
      public String login(){
         return new String("login");
      }
 
+    //   registration page
      @GetMapping("/register")
      public String register(Model model){
         UserForm userForm = new UserForm();
@@ -69,7 +71,6 @@ public class PageController {
      }
 
     //  processing register
-
     @RequestMapping(value = "/do-register", method = RequestMethod.POST)
     public String processRegister(@Valid @ModelAttribute UserForm userForm, BindingResult rBindingResult, HttpSession session){
         System.out.println("processing registration");
