@@ -3,8 +3,6 @@ package com.scm.entities;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.annotations.Collate;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -12,8 +10,16 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Contact {
 
     @Id
@@ -28,7 +34,10 @@ public class Contact {
     private String description;
     private boolean favorite = false;
     private String websiteLink;
+    private String linkedInLink;
     // private List<String> socialLink = new ArrayList<>();
+
+    private String cloudinaryImagePublicId;
 
     @ManyToOne()
     private User user;

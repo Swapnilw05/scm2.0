@@ -117,16 +117,18 @@ public class SecurityConfig {
 
         httpSecurity.csrf(AbstractHttpConfigurer::disable);
 
-        httpSecurity.logout(logoutForm ->{
-            logoutForm.logoutUrl("/do-logout");
-            logoutForm.logoutSuccessUrl("/login?logout=true");
-        });
-
+        
         // oauth configurations
         httpSecurity.oauth2Login(oauth -> {
             oauth.loginPage("/login");
             oauth.successHandler(handler);
         });
+
+        httpSecurity.logout(logoutForm ->{
+            logoutForm.logoutUrl("/do-logout");
+            logoutForm.logoutSuccessUrl("/login?logout=true");
+        });
+
 
         return httpSecurity.build();
     }
