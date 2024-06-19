@@ -4,7 +4,7 @@
   th:replace="~{base :: parent(~{::#content},~{::title},~{::script})}"
 >
   <head>
-    <title>All Your Contacts</title>
+    <title>Search Contacts</title>
   </head>
   <body>
     <div id="content">
@@ -18,8 +18,9 @@
 
       <div class="sm:pl-64 pt-20">
         <div class="flex justify-center flex-col items-center">
-          <h1 class="text-5xl text-center">All Your Contacts</h1>
-          <p class="text-center">List of All contacts...</p>
+          <h1 class="text-5xl">Search Results</h1>
+          <p data-th-text="${pageContact.totalElements}+' results found'"></p>
+
           <div class="contacts_container p-5">
             <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
               <form
@@ -82,6 +83,7 @@
                 </div>
               </form>
               <table
+                data-th-if="${pageContact.totalElements>0}"
                 class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
               >
                 <thead
@@ -165,7 +167,7 @@
                   <ul class="inline-flex -space-x-px text-base h-10">
                     <li data-th-unless="${pageContact.first}">
                       <a
-                        data-th-href="@{'/user/contacts?size='+${pageSize}+'&page=' + ${pageContact.number-1}}"
+                        data-th-href="@{'/user/contacts/search?size='+${pageSize}+'&page='+${pageContact.number-1}+'&field='+${contactSearchForm.field}+'&value='+${contactSearchForm.value}  }"
                         href="#"
                         class="flex items-center justify-center px-4 h-10 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
                         >Previous</a
@@ -175,7 +177,7 @@
                       data-th-each="index :  ${#numbers.sequence(0,pageContact.totalPages-1)}"
                     >
                       <a
-                        data-th-href="@{'/user/contacts?size='+${pageSize}+'&page='+${index}}"
+                        data-th-href="@{'/user/contacts/search?size='+${pageSize}+'&page='+${index}+'&field='+${contactSearchForm.field}+'&value='+${contactSearchForm.value}  }"
                         href="#"
                         data-th-classappend="${index==pageContact.number? 'bg-blue-50  dark:bg-gray-600' : 'bg-white dark:bg-gray-800'}"
                         class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
@@ -186,7 +188,7 @@
 
                     <li data-th-unless="${pageContact.last}">
                       <a
-                        data-th-href="@{'/user/contacts?size='+${pageSize}+'&page=' + ${pageContact.number+1}}"
+                        data-th-href="@{'/user/contacts/search?size='+${pageSize}+'&page='+${pageContact.number+1}+'&field='+${contactSearchForm.field}+'&value='+${contactSearchForm.value}  }"
                         href="#"
                         class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
                         >Next</a
@@ -195,6 +197,12 @@
                   </ul>
                 </nav>
               </div>
+              <h1
+                class="text-5xl text-center dark:bg-gray-800 dark:text-white bg-white p-4"
+                data-th-if="${pageContact.totalElements<=0}"
+              >
+                No Results Found
+              </h1>
             </div>
           </div>
         </div>
