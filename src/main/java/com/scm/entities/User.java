@@ -2,9 +2,7 @@ package com.scm.entities;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -58,7 +56,9 @@ public class User implements UserDetails{
 
     // information
     @Getter(value = AccessLevel.NONE)
-    private boolean enabled = true;
+    private boolean enabled = false;
+
+
     private boolean emailVerified = false;
     private boolean phoneVerified = false;
 
@@ -76,6 +76,8 @@ public class User implements UserDetails{
 
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roleList = new ArrayList<>();
+
+    private String emailToken;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

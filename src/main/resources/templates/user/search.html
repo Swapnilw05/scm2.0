@@ -10,13 +10,13 @@
     <div id="content">
       <!-- sidebar -->
 
-      <!-- user is logged in : sidebars -->
+      <!-- user is logged in : sidebar -->
 
       <div th:if="${loggedInUser}">
         <div data-th-replace="~{user/sidebar :: sidebar}"></div>
       </div>
 
-      <div class="sm:pl-64 pt-20">
+      <div class="sm:pl-64 pt-20" style="height: 1000px">
         <div class="flex justify-center flex-col items-center">
           <h1 class="text-5xl">Search Results</h1>
           <p data-th-text="${pageContact.totalElements}+' results found'"></p>
@@ -25,16 +25,17 @@
             <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
               <form
                 data-th-object="${contactSearchForm}"
-                action=""
                 data-th-action="@{'/user/contacts/search'}"
               >
                 <div
                   class="flex space-x-3 p-5 items-center justify-start flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 bg-white dark:bg-gray-900"
                 >
-                  <!-- select box -->
+                  <!-- select box   -->
+
                   <div>
                     <select
                       data-th-field="*{field}"
+                      name="field"
                       id="countries_disabled"
                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     >
@@ -44,7 +45,6 @@
                       <option value="email">Email</option>
                     </select>
                   </div>
-
                   <label for="table-search" class="sr-only">Search</label>
                   <div class="relative">
                     <div
@@ -148,20 +148,24 @@
                       </div>
                     </td>
                     <td class="px-6 py-4">
-                      <a href="">
-                        <i class="fa-solid w-6 h-6 fa-trash"></i>
-                      </a>
-                      <a href=""> <i class="fa-solid w-6 h-6 fa-pen"></i></a>
-                      <a href=""> <i class="fa-solid fa-eye"></i></a>
+                      <div>
+                        <a href="">
+                          <i class="fa-solid w-6 h-6 fa-trash"></i>
+                        </a>
+                        <a href=""> <i class="fa-solid w-6 h-6 fa-pen"></i></a>
+                        <button th:onclick="loadContactdata([[${c.id}]])">
+                          <i class="fa-solid fa-eye"></i>
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 </tbody>
               </table>
 
-              <!-- pegination component -->
+              <!-- pagination component  -->
               <div
                 data-th-if="${pageContact.totalElements>0}"
-                class="pegination_contanier bg-white dark:bg-gray-800 p-5 text-center"
+                class="pagination_container bg-white dark:bg-gray-800 p-5 text-center"
               >
                 <nav aria-label="Page navigation example">
                   <ul class="inline-flex -space-x-px text-base h-10">
@@ -197,16 +201,24 @@
                   </ul>
                 </nav>
               </div>
+
               <h1
                 class="text-5xl text-center dark:bg-gray-800 dark:text-white bg-white p-4"
                 data-th-if="${pageContact.totalElements<=0}"
               >
-                No Results Found
+                No result found
               </h1>
             </div>
           </div>
         </div>
+        <div data-th-replace="~{user/contact_modals :: contact}"></div>
       </div>
     </div>
+
+    <script data-th-src="@{'/js/contact.js'}"></script>
+
+    <script>
+      console.log("this is profile page");
+    </script>
   </body>
 </html>

@@ -15,6 +15,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import com.scm.services.impl.SecurityCustomUserDetailService;
 
 
+
+
 @Configuration
 public class SecurityConfig {
 
@@ -47,6 +49,9 @@ public class SecurityConfig {
 
     @Autowired
     private OAuthAuthenticationSuccessHandler handler;
+
+    @Autowired
+    private AuthFailureHandler authFailureHandler;
 
 
     // configuration of authentication provider for spring security
@@ -111,7 +116,9 @@ public class SecurityConfig {
             // }
 
             // });
-       
+
+            formLogin.failureHandler(authFailureHandler);
+            
        
         });
 

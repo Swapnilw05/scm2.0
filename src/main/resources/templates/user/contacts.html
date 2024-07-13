@@ -10,7 +10,7 @@
     <div id="content">
       <!-- sidebar -->
 
-      <!-- user is logged in : sidebars -->
+      <!-- user is logged in : sidebar -->
 
       <div th:if="${loggedInUser}">
         <div data-th-replace="~{user/sidebar :: sidebar}"></div>
@@ -19,9 +19,12 @@
       <div class="sm:pl-64 pt-20">
         <div class="flex justify-center flex-col items-center">
           <h1 class="text-5xl text-center">All Your Contacts</h1>
-          <p class="text-center">List of All contacts...</p>
+          <p class="text-center">List of all contacts...</p>
+
           <div class="contacts_container p-5">
             <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+              <div data-th-replace="~{message :: messagebox}"></div>
+
               <form
                 data-th-object="${contactSearchForm}"
                 action=""
@@ -30,7 +33,8 @@
                 <div
                   class="flex space-x-3 p-5 items-center justify-start flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 bg-white dark:bg-gray-900"
                 >
-                  <!-- select box -->
+                  <!-- select box   -->
+
                   <div>
                     <select
                       data-th-field="*{field}"
@@ -43,7 +47,6 @@
                       <option value="email">Email</option>
                     </select>
                   </div>
-
                   <label for="table-search" class="sr-only">Search</label>
                   <div class="relative">
                     <div
@@ -82,6 +85,7 @@
                 </div>
               </form>
               <table
+                data-th-if="${pageContact.totalElements>0}"
                 class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
               >
                 <thead
@@ -140,26 +144,41 @@
                         <a data-th-href="@{*{websiteLink}}" target="_blank"
                           ><i class="fa-solid w-6 h-6 fa-link"></i
                         ></a>
+
                         <a data-th-href="@{*{linkedInLink}}" target="_blank">
                           <i class="fa-brands w-6 h-6 fa-linkedin"></i>
                         </a>
                       </div>
                     </td>
                     <td class="px-6 py-4">
-                      <a href="">
-                        <i class="fa-solid w-6 h-6 fa-trash"></i>
-                      </a>
-                      <a href=""> <i class="fa-solid w-6 h-6 fa-pen"></i></a>
-                      <a href=""> <i class="fa-solid fa-eye"></i></a>
+                      <div>
+                        <!-- <a data-th-href="@{'/user/contacts/delete/'+*{id}}">
+                          <i class="fa-solid w-6 h-6 fa-trash"></i>
+                        </a> -->
+
+                        <!-- delete contact -->
+                        <button th:onclick="deleteContact([[${c.id}]])">
+                          <i class="fa-solid w-6 h-6 fa-trash"></i>
+                        </button>
+                        <!-- update contact -->
+                        <a data-th-href="@{'/user/contacts/view/'+*{id}}">
+                          <i class="fa-solid w-6 h-6 fa-pen"></i
+                        ></a>
+
+                        <!-- viewcontact -->
+                        <button th:onclick="loadContactdata([[${c.id}]])">
+                          <i class="fa-solid fa-eye"></i>
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 </tbody>
               </table>
 
-              <!-- pegination component -->
+              <!-- pagination component  -->
               <div
                 data-th-if="${pageContact.totalElements>0}"
-                class="pegination_contanier bg-white dark:bg-gray-800 p-5 text-center"
+                class="pagination_container bg-white dark:bg-gray-800 p-5 text-center"
               >
                 <nav aria-label="Page navigation example">
                   <ul class="inline-flex -space-x-px text-base h-10">
@@ -195,10 +214,22 @@
                   </ul>
                 </nav>
               </div>
+              <h1
+                class="text-5xl text-center dark:bg-gray-800 dark:text-white bg-white p-4"
+                data-th-if="${pageContact.totalElements<=0}"
+              >
+                No result found
+              </h1>
             </div>
           </div>
+          <div data-th-replace="~{ user/contact_modal :: contact}"></div>
         </div>
       </div>
     </div>
+
+    <script data-th-src="@{'/js/contact.js'}"></script>
+    <script>
+      console.log("this is profile page");
+    </script>
   </body>
 </html>
